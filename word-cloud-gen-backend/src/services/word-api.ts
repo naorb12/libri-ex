@@ -27,7 +27,6 @@ export async function getRandomWord(
       const word: string = filtered[k][0];
       words.set(word, (words.get(word) || 0) + 1);
     }
-    console.log(`Added ${i + currentBatchSize} words`);
   }
 
   return words;
