@@ -1,3 +1,5 @@
+import WordCloud from "react-d3-cloud";
+
 type props = {
   wordEntries: [string, number][];
 };
@@ -9,7 +11,7 @@ export default function Words({ wordEntries }: props) {
     maxCount: number
   ): number => {
     const minSize = 12;
-    const maxSize = 64;
+    const maxSize = 80;
     if (maxCount === minCount) return minSize;
     const ratio = (count - minCount) / (maxCount - minCount);
     return minSize + (maxSize - minSize) * ratio;
@@ -40,8 +42,21 @@ export default function Words({ wordEntries }: props) {
   const maxCount = counts.length > 0 ? Math.max(...counts) : 0;
 
   return (
-    <>
-      <div className="words">
+    <div className="cloud">
+      <WordCloud
+        data={wordEntries.map(([word, count]) => ({
+          text: word,
+          value: count,
+        }))}
+        width={2000}
+        height={2200}
+        font={"Poppins"}
+        rotate={() => (Math.random() < 0.5 ? 0 : 90)}
+        padding={1}
+        fontSize={(word) => getFontSize(word.value, minCount, maxCount)}
+        random={() => 0.5}
+      />
+      {/* <div className="words">
         {wordEntries.map(([word, count]) => {
           const fontSize = getFontSize(count, minCount, maxCount);
           const color = getWordColor(word);
@@ -60,7 +75,7 @@ export default function Words({ wordEntries }: props) {
             </span>
           );
         })}
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 }
